@@ -12,11 +12,11 @@ exports.index = function (req, res) {
       result.forEach(oneGroup => {
         resp.push({id: oneGroup._id})
       })
-      res.status(200).json({ groups: resp })
+      return res.status(200).json({ groups: resp })
     })
     .catch(err => {
       logger.serverLog(TAG, `Inernal Server Error ${JSON.stringify(err)}`)
-      res.status(500).json({ status: 'failed', err: err })
+      return res.status(500).json({ status: 'failed', err: err })
     })
 }
 
@@ -30,10 +30,10 @@ exports.createGroup = function (req, res) {
     .then(result => {
       let resp = []
       resp.push({creation_time: result.createtime, id: result._id})
-      res.status(201).json({ groups: resp })
+      return res.status(201).json({ groups: resp })
     })
     .catch(err => {
       logger.serverLog(TAG, `Inernal Server Error ${JSON.stringify(err)}`)
-      res.status(500).json({ status: 'failed', payload: err })
+      return res.status(500).json({ status: 'failed', payload: err })
     })
 }
