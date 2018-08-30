@@ -49,7 +49,7 @@ exports.deleteAdmin = function (req, res) {
   Groups.findOne({_id: groupId})
     .exec()
     .then(group => {
-      group.admins = _.difference(_.union(group.admins, newAdmins), _.intersection(group.admins, newAdmins))
+      group.admins = _.difference(group.admins, newAdmins)
 
       group.save(function (err) {
         if (err) {
