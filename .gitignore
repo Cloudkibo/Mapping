@@ -72,3 +72,5 @@ broadcastFiles/
 .DS_Store
 
 package-lock.json
+
+uploaded_media
