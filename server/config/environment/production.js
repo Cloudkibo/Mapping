@@ -1,9 +1,9 @@
 // Production specific configuration
 // ==================================
 module.exports = {
-    // MongoDB connection options
-    mongo: {
-      uri: process.env.MONGO_URI || 'mongodb://localhost/whatsappsimulator-prod'
-    },
-    seedDB: false,
-  }
+  // MongoDB connection options
+  mongo: {
+    uri: process.env.MONGO_URI || 'mongodb://localhost/whatsappsimulator-prod'
+  },
+  seedDB: false
+}

@@ -3,9 +3,9 @@
 // Development specific configuration
 // ==================================
 module.exports = {
-    // MongoDB connection options
-    mongo: {
-      uri: 'mongodb://localhost/whatsappsimulator-dev'
-    },
-    seedDB: false,
-  }
+  // MongoDB connection options
+  mongo: {
+    uri: 'mongodb://localhost/whatsappsimulator-dev'
+  },
+  seedDB: false
+}
