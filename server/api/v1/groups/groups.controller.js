@@ -68,17 +68,18 @@ exports.updateGroup = function (req, res) {
       if (!result) {
         return res.status(404).json({})
       }
-      Groups.updateOne({_id: req.params.groupId}, {$set: {title: req.body.subject}},
-        function (err) {
-          if (err) {
-            logger.serverLog(TAG, `Internal Server Error ${JSON.stringify(err)}`)
-            return res.status(500).json({ status: 'failed', err: err })
-          }
+      Groups.updateOne({_id: req.params.groupId}, {$set: {title: req.body.subject}})
+        .exec()
+        .then(result => {
           return res.status(200).json({})
         })
         .catch(err => {
           logger.serverLog(TAG, `Inernal Server Error ${JSON.stringify(err)}`)
           res.status(500).json({ status: 'failed', err: err })
         })
+    })
+    .catch(err => {
+      logger.serverLog(TAG, `Inernal Server Error ${JSON.stringify(err)}`)
+      res.status(500).json({ status: 'failed', err: err })
     })
 }

@@ -18,7 +18,7 @@ exports.deleteParticipants = function (req, res) {
       if (!group) {
         return res.status(404).json({})
       }
-      group.participants = _.difference(_.union(group.participants, newParticipants), _.intersection(group.participants, newParticipants))
+      group.participants = _.difference(group.participants, newParticipants, group.participants, newParticipants)
 
       group.save(function (err) {
         if (err) {
