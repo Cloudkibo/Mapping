@@ -31,11 +31,11 @@ exports.index = function (req, res) {
           flag = false
         })
 
-        res.status(200).json({ contacts: resp })
+        return res.status(200).json({ contacts: resp })
       })
       .catch(err => {
         logger.serverLog(TAG, `Inernal Server Error ${JSON.stringify(err)}`)
-        res.status(500).json({ status: 'failed', payload: err })
+        return res.status(500).json({ status: 'failed', payload: err })
       })
   }
   // res.status(200).json({ status: 'success', payload: 'Hello Contact' })
