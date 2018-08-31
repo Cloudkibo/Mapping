@@ -71,7 +71,6 @@ exports.updateGroup = function (req, res) {
       Groups.updateOne({_id: req.params.groupId}, {$set: {title: req.body.subject}})
         .exec()
         .then(result => {
-          console.log('result', result)
           return res.status(200).json({})
         })
         .catch(err => {
