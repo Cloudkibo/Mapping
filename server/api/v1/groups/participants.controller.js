@@ -44,7 +44,14 @@ exports.leaveGroup = function (req, res) {
       if (!group) {
         return res.status(404).json({})
       }
-      return res.status(200).json({})
+      group.groupLeft = true
+      _.pull(group.admins, req.params.groupId)
+      _.pull(group.admins, req.params.groupId)
+      group.save(err => {
+        err
+          ? res.status(500).json({})
+          : res.status(200).json({})
+      })
     })
     .catch(err => {
       logger.serverLog(TAG, `Internal Server Error ${JSON.stringify(err)}`)
