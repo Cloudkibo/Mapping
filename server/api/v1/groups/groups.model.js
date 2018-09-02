@@ -7,6 +7,7 @@ let groupSchema = new Schema({
   creator: String,
   participants: [String],
   invite: false,
+  icon: String,
   createtime: { type: Date, default: Date.now }
 })
 
