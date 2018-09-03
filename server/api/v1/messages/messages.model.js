@@ -5,7 +5,8 @@ let messageSchema = new Schema({
   recepientType: String,
   to: String,
   type: String,
-  messageBody: Schema.Types.Mixed
+  messageBody: Schema.Types.Mixed,
+  previewUrl: { type: Boolean, default: false }
 })
 
 module.exports = mongoose.model('messages', messageSchema)
