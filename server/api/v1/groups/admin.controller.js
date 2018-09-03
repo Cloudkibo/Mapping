@@ -15,9 +15,7 @@ exports.addAdmin = function (req, res) {
   Groups.findOne({_id: groupId})
     .exec()
     .then(group => {
-      newAdmins.map((admin) => {
-        group.admins.push(admin)
-      })
+      group.admins = _.union(group.admins, newAdmins)
 
       group.save(function (err) {
         if (err) {
