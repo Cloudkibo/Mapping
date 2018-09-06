@@ -25,6 +25,7 @@ router.put('/:groupId',
 // Handling Invite Logic
 router.get('/:groupId/invite', invite.createInvite)
 router.delete('/:groupId/invite', invite.deleteInvite)
+router.get('/groups/:groupId', invite.handleInviteClick)
 
 // Handling Admin Logic
 router.patch('/:groupId/admins', admin.addAdmin)
