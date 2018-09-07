@@ -2,6 +2,7 @@ const logger = require('./../../../components/logger')
 const Groups = require('./groups.model')
 const Contacts = require('./../contacts/contacts.model')
 const config = require('./../../../config/environment/index')
+const webhookUtility = require('./../../../components/webhook.utility')
 const TAG = '/server/api/v1/groups/invite.controller.js'
 
 exports.createInvite = function (req, res) {
@@ -67,8 +68,15 @@ exports.handleInviteClick = function (req, res) {
       if (resPhone) {
         logger.serverLog(TAG, 'Number found')
         // Write the logic to call webhook
-        callWebHook(resPhone, groupId)
-        res.status(200).json({status: 'success'})
+        let payloadWebhook = webhookUtility.PreparePayloadForWebhook('system_participant_add',
+          phone, webhookUtility.genRandomString(), {admin: 'admin', phone}, 'system', groupId)
+
+        // Send to webhook
+        webhookUtility.callWebhook('/webhooks', { messages: payloadWebhook }, (err, result) => {
+          result.status === 200
+            ? res.status(200).json({ messages: payloadWebhook })
+            : res.status(500).json({ messages: err })
+        })
       } else {
         let payload = new Contacts({
           name: 'user',
@@ -82,7 +90,17 @@ exports.handleInviteClick = function (req, res) {
 
           Contacts.findOne({phone: phone})
             .then(res => {
-              callWebHook(res, groupId)
+              // Write the logic to call webhook
+              let payloadWebhook = webhookUtility.PreparePayloadForWebhook('system_participant_add',
+                res.phone, webhookUtility.genRandomString(), {admin: 'admin', phone: res.phone},
+                'system', groupId)
+
+              // Send to webhook
+              webhookUtility.callWebhook('/webhooks', { messages: payloadWebhook }, (err, result) => {
+                result.status === 200
+                  ? res.status(200).json({ messages: payloadWebhook })
+                  : res.status(500).json({ messages: err })
+              })
             })
             .catch(err => {
               logger.serverLog(TAG, `Internal Server Error ${JSON.stringify(err)}`)
@@ -95,8 +113,4 @@ exports.handleInviteClick = function (req, res) {
       logger.serverLog(TAG, `Internal Server Error ${JSON.stringify(err)}`)
       return res.status(500).json({ status: 'failed', err: err })
     })
-}
-
-const callWebHook = (phone, groupId) => {
-  // Call your webhook here
 }
