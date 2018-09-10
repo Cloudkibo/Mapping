@@ -45,6 +45,14 @@ function PreparePayloadForWebhook (payloadType, from, id, messageBody, type, gro
     payload.voice = messageBody
   }
 
+  if (payloadType === 'message_audio') {
+    payload.audio = messageBody
+  }
+
+  if (payloadType === 'message_video') {
+    payload.video = messageBody
+  }
+
   // Push the payload to array and return
   messages.push(payload)
   return messages

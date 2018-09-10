@@ -10,5 +10,7 @@ router.get('/handleStaticLocation', controller.handleStaticLocation)
 router.get('/handleImageMessage', controller.handleImageMessage)
 router.get('/handleDocumentMessage', controller.handleDocumentMessage)
 router.get('/handleVoiceMessage', controller.handleVoiceMessage)
+router.get('/handleVideoMessage', controller.handleVideoMessage)
+router.get('/handleAudioMessage', controller.handleAudioMessage)
 
 module.exports = router
