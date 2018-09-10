@@ -166,3 +166,63 @@ exports.handleVoiceMessage = function (req, res) {
       })
     })
 }
+
+exports.handleAudioMessage = function (req, res) {
+  logger.serverLog(TAG, 'Webhook handle Audio message')
+
+  const payloadType = 'message_audio'
+  const from = req.query.phone ? req.query.phone : 'phone'
+  const id = webhookUtility.genRandomString()
+  const type = 'audio'
+
+  Media.findOne({mediaType: 'audio/mpeg'})
+    .exec()
+    .then(media => {
+      let messageBody = {
+        file: media.url,
+        id: media.mediaId,
+        mime_type: media.mediaType,
+        sha256: webhookUtility.genRandomString() + webhookUtility.genRandomString(),
+        caption: req.query.caption ? req.query.caption : 'caption'
+      }
+
+      let payload = webhookUtility.PreparePayloadForWebhook(payloadType, from, id, messageBody, type)
+
+      webhookUtility.callWebhook('/api/v1/webhooks', { messages: payload }, (err, result) => {
+        if (err) return res.status(500).json({ messages: err })
+        result.status === 200
+          ? res.status(200).json({ messages: payload })
+          : res.status(500).json({ messages: err })
+      })
+    })
+}
+
+exports.handleVideoMessage = function (req, res) {
+  logger.serverLog(TAG, 'Webhook handle Video message')
+
+  const payloadType = 'message_video'
+  const from = req.query.phone ? req.query.phone : 'phone'
+  const id = webhookUtility.genRandomString()
+  const type = 'video'
+
+  Media.findOne({mediaType: 'video/mp4'})
+    .exec()
+    .then(media => {
+      let messageBody = {
+        file: media.url,
+        id: media.mediaId,
+        mime_type: media.mediaType,
+        sha256: webhookUtility.genRandomString() + webhookUtility.genRandomString(),
+        caption: req.query.caption ? req.query.caption : 'caption'
+      }
+
+      let payload = webhookUtility.PreparePayloadForWebhook(payloadType, from, id, messageBody, type)
+
+      webhookUtility.callWebhook('/api/v1/webhooks', { messages: payload }, (err, result) => {
+        if (err) return res.status(500).json({ messages: err })
+        result.status === 200
+          ? res.status(200).json({ messages: payload })
+          : res.status(500).json({ messages: err })
+      })
+    })
+}
