@@ -72,7 +72,8 @@ exports.handleInviteClick = function (req, res) {
           phone, webhookUtility.genRandomString(), {admin: 'admin', phone}, 'system', groupId)
 
         // Send to webhook
-        webhookUtility.callWebhook('/webhooks', { messages: payloadWebhook }, (err, result) => {
+        webhookUtility.callWebhook('/api/v1/webhooks', { messages: payloadWebhook }, (err, result) => {
+          if (err) return res.status(500).json({ messages: err })
           result.status === 200
             ? res.status(200).json({ messages: payloadWebhook })
             : res.status(500).json({ messages: err })
@@ -96,7 +97,8 @@ exports.handleInviteClick = function (req, res) {
                 'system', groupId)
 
               // Send to webhook
-              webhookUtility.callWebhook('/webhooks', { messages: payloadWebhook }, (err, result) => {
+              webhookUtility.callWebhook('/api/v1/webhooks', { messages: payloadWebhook }, (err, result) => {
+                if (err) return res.status(500).json({ messages: err })
                 result.status === 200
                   ? res.status(200).json({ messages: payloadWebhook })
                   : res.status(500).json({ messages: err })

@@ -29,6 +29,22 @@ function PreparePayloadForWebhook (payloadType, from, id, messageBody, type, gro
     payload.context = context
   }
 
+  if (payloadType === 'message_static_location') {
+    payload.location = messageBody
+  }
+
+  if (payloadType === 'message_image') {
+    payload.image = messageBody
+  }
+
+  if (payloadType === 'message_document') {
+    payload.document = messageBody
+  }
+
+  if (payloadType === 'message_voice') {
+    payload.voice = messageBody
+  }
+
   // Push the payload to array and return
   messages.push(payload)
   return messages
