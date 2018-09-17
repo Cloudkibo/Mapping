@@ -12,5 +12,6 @@ router.get('/handleDocumentMessage', controller.handleDocumentMessage)
 router.get('/handleVoiceMessage', controller.handleVoiceMessage)
 router.get('/handleVideoMessage', controller.handleVideoMessage)
 router.get('/handleAudioMessage', controller.handleAudioMessage)
+router.get('/handleMessageStatus', controller.handleMessageStatus)
 
 module.exports = router

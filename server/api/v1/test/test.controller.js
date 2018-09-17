@@ -1,6 +1,7 @@
 const logger = require('../../../components/logger')
 const webhookUtility = require('./../../../components/webhook.utility')
 const Media = require('./../media/media.model')
+const Message = require('./../messages/messages.model')
 const TAG = '/api/v1/test/index.js'
 
 exports.index = function (req, res) {
@@ -222,6 +223,33 @@ exports.handleVideoMessage = function (req, res) {
         if (err) return res.status(500).json({ messages: err })
         result.status === 200
           ? res.status(200).json({ messages: payload })
+          : res.status(500).json({ messages: err })
+      })
+    })
+}
+
+exports.handleMessageStatus = function (req, res) {
+  logger.serverLog(TAG, 'Webhook handle message Status')
+
+  const messageStatus = req.query.status ? req.query.status : req.query.status
+
+  Message.find({})
+    .exec()
+    .then(messages => {
+      let lastMessage = messages.pop()
+      let temp = {
+        id: lastMessage._id,
+        recipient_id: lastMessage.to,
+        status: messageStatus,
+        timestamp: new Date().toUTCString()
+      }
+
+      let statuses = []
+      statuses.push(temp)
+      webhookUtility.callWebhook('/api/v1/webhooks', { statuses: statuses }, (err, result) => {
+        if (err) return res.status(500).json({ messages: err })
+        result.status === 200
+          ? res.status(200).json({ statuses: statuses })
           : res.status(500).json({ messages: err })
       })
     })
